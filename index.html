@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pro Sports Card Tracker | Advanced Analytics</title>
+    <meta name="description" content="Professional sports card investment tracking with profit analytics, portfolio management, and ROI optimization">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- PWA Support -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#667eea">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1>🏈 Pro Card Tracker</h1>
+                <div class="header-controls">
+                    <button id="themeToggle" class="theme-btn">🌙 Dark Mode</button>
+                    <button id="exportBtn" class="export-btn">📤 Export Data</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Quick Stats -->
+        <section class="quick-stats">
+            <div class="stat-card">
+                <div class="stat-icon">💰</div>
+                <div class="stat-info">
+                    <h3>Portfolio Value</h3>
+                    <span id="totalPortfolioValue">$0.00</span>
+                    <span class="stat-change" id="portfolioChange">+0%</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📈</div>
+                <div class="stat-info">
+                    <h3>Total Profit</h3>
+                    <span id="totalProfit">$0.00</span>
+                    <span class="stat-change positive" id="profitChange">+0%</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🃏</div>
+                <div class="stat-info">
+                    <h3>Cards Tracked</h3>
+                    <span id="totalCards">0</span>
+                    <span class="stat-change">Active</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🎯</div>
+                <div class="stat-info">
+                    <h3>Avg ROI</h3>
+                    <span id="avgROI">0%</span>
+                    <span class="stat-change positive">All Time</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <div class="main-grid">
+            <!-- Left Column - Forms & Controls -->
+            <div class="left-column">
+                <!-- Add Card Form -->
+                <section class="card-form-section">
+                    <h2>➕ Add New Card</h2>
+                    <form id="cardForm" class="advanced-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="cardName">Card Name *</label>
+                                <input type="text" id="cardName" placeholder="e.g., 2020 Patrick Mahomes Prizm PSA 10" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="playerName">Player</label>
+                                <input type="text" id="playerName" placeholder="Player Name">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="sport">Sport</label>
+                                <select id="sport">
+                                    <option value="football">🏈 Football</option>
+                                    <option value="basketball">🏀 Basketball</option>
+                                    <option value="baseball">⚾ Baseball</option>
+                                    <option value="soccer">⚽ Soccer</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="year">Year</label>
+                                <input type="number" id="year" placeholder="2023" min="1900" max="2030">
+                            </div>
+                            <div class="form-group">
+                                <label for="grade">Grade</label>
+                                <select id="grade">
+                                    <option value="raw">Raw</option>
+                                    <option value="psa10">PSA 10</option>
+                                    <option value="bgs9">BGS 9</option>
+                                    <option value="bgs10">BGS 10</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="purchasePrice">Purchase Price *</label>
+                                <input type="number" id="purchasePrice" step="0.01" placeholder="0.00" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="salePrice">Sale Price *</label>
+                                <input type="number" id="salePrice" step="0.01" placeholder="0.00" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="purchaseDate">Purchase Date</label>
+                                <input type="date" id="purchaseDate">
+                            </div>
+                            <div class="form-group">
+                                <label for="saleDate">Sale Date *</label>
+                                <input type="date" id="saleDate" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="fees">Fees & Shipping</label>
+                                <input type="number" id="fees" step="0.01" placeholder="0.00" value="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="taxRate">Tax Rate %</label>
+                                <input type="number" id="taxRate" step="0.01" placeholder="0.0" value="0">
+                            </div>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="period">Reporting Period *</label>
+                            <select id="period" required>
+                                <option value="">Select Period</option>
+                                <optgroup label="Weekly">
+                                    <option value="week1">Week 1</option>
+                                    <option value="week2">Week 2</option>
+                                    <option value="week3">Week 3</option>
+                                    <option value="week4">Week 4</option>
+                                </optgroup>
+                                <optgroup label="Monthly">
+                                    <option value="month1">Month 1</option>
+                                    <option value="month2">Month 2</option>
+                                    <option value="month3">Month 3</option>
+                                    <option value="month4">Month 4</option>
+                                </optgroup>
+                                <optgroup label="Quarterly">
+                                    <option value="q1">Q1</option>
+                                    <option value="q2">Q2</option>
+                                    <option value="q3">Q3</option>
+                                    <option value="q4">Q4</option>
+                                </optgroup>
+                            </select>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="notes">Notes</label>
+                            <textarea id="notes" placeholder="Add any notes about this card..."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn-primary">💾 Add Card to Portfolio</button>
+                    </form>
+                </section>
+
+                <!-- Period Filter -->
+                <section class="filter-section">
+                    <h3>📊 Filter by Period</h3>
+                    <div class="period-buttons" id="periodButtons">
+                        <button class="period-btn active" data-period="all">All Periods</button>
+                        <button class="period-btn" data-period="week1">Week 1</button>
+                        <button class="period-btn" data-period="week2">Week 2</button>
+                        <button class="period-btn" data-period="week3">Week 3</button>
+                        <button class="period-btn" data-period="week4">Week 4</button>
+                        <button class="period-btn" data-period="month1">Month 1</button>
+                        <button class="period-btn" data-period="month2">Month 2</button>
+                        <button class="period-btn" data-period="month3">Month 3</button>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Right Column - Analytics & Data -->
+            <div class="right-column">
+                <!-- Charts -->
+                <section class="charts-section">
+                    <h2>📈 Analytics Dashboard</h2>
+                    <div class="charts-grid">
+                        <div class="chart-container">
+                            <canvas id="profitChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="roiChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="volumeChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="sportDistributionChart"></canvas>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Cards List -->
+                <section class="cards-section">
+                    <div class="section-header">
+                        <h2>🃏 Your Card Portfolio</h2>
+                        <div class="filter-controls">
+                            <select id="sportFilter">
+                                <option value="all">All Sports</option>
+                                <option value="football">Football</option>
+                                <option value="basketball">Basketball</option>
+                                <option value="baseball">Baseball</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="cardsContainer" class="cards-grid">
+                        <!-- Cards will be populated here -->
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Export Modal -->
+    <div id="exportModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>📤 Export Your Data</h2>
+            <div class="export-options">
+                <div class="export-option">
+                    <h3>📊 CSV Export</h3>
+                    <p>Export to Excel/Google Sheets for advanced analysis</p>
+                    <button id="exportCSV" class="btn-primary">Download CSV</button>
+                </div>
+                <div class="export-option">
+                    <h3>📄 PDF Report</h3>
+                    <p>Generate a professional portfolio report</p>
+                    <button id="exportPDF" class="btn-primary">Generate PDF</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
